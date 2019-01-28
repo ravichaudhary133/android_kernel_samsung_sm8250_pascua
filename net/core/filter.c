@@ -7520,6 +7520,18 @@ const struct bpf_verifier_ops sk_msg_verifier_ops = {
 const struct bpf_prog_ops sk_msg_prog_ops = {
 };
 
+
+const struct bpf_verifier_ops flow_dissector_verifier_ops = {
+	.get_func_proto		= flow_dissector_func_proto,
+	.is_valid_access	= flow_dissector_is_valid_access,
+	.convert_ctx_access	= bpf_convert_ctx_access,
+};
+
+const struct bpf_prog_ops flow_dissector_prog_ops = {
+	.test_run		= bpf_prog_test_run_flow_dissector,
+};
+
+
 int sk_detach_filter(struct sock *sk)
 {
 	int ret = -ENOENT;
