@@ -25,9 +25,6 @@
 #include <net/flow_dissector.h>
 #include <scsi/fc/fc_fcoe.h>
 #include <uapi/linux/batadv_packet.h>
-#include <linux/bpf.h>
-
-static DEFINE_MUTEX(flow_dissector_mutex);
 
 static void dissector_set_key(struct flow_dissector *flow_dissector,
 			      enum flow_dissector_key_id key_id)
@@ -832,6 +829,9 @@ bool __skb_flow_dissect(const struct sk_buff *skb,
 					      FLOW_DISSECTOR_KEY_BASIC,
 					      target_container);
 
+
+
+	rcu_read_lock();
 	if (skb) {
 		struct bpf_flow_keys flow_keys;
 		struct bpf_prog *attached = NULL;

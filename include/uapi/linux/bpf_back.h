@@ -12,7 +12,7 @@
 #include <linux/bpf_common.h>
 
 /* Extended instruction set based on top of classic BPF */
-
+#define BPF_FLOW_DISSECTOR BPF_PROG_TYPE_FLOW_DISSECTOR
 /* instruction classes */
 #define BPF_ALU64	0x07	/* alu mode in double word width */
 
@@ -187,7 +187,6 @@ enum bpf_attach_type {
 	BPF_CGROUP_UDP4_SENDMSG,
 	BPF_CGROUP_UDP6_SENDMSG,
 	BPF_LIRC_MODE2,
-	BPF_FLOW_DISSECTOR,
 	BPF_CGROUP_UDP4_RECVMSG = 19,
 	BPF_CGROUP_UDP6_RECVMSG,
 	BPF_CGROUP_SYSCTL,
