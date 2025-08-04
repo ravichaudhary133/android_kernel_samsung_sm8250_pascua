@@ -13,6 +13,10 @@ do.cleanuponabort=0
 device.name1=x1q
 device.name2=x1qxx
 device.name3=y2q
+device.name4=gts7xlwifi
+device.name5=gts7xl
+device.name6=gts7l
+device.name7=gts7lwifi
 supported.versions=11 - 15
 supported.patchlevels=
 '; } # end properties
