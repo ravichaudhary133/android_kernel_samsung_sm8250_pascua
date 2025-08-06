@@ -18,20 +18,20 @@ ifeq ($(CONFIG_RELOCATABLE), y)
 # Pass --no-apply-dynamic-relocs to restore pre-binutils-2.27 behaviour
 # for relative relocs, since this leads to better Image compression
 # with the relocation offsets always being zero.
-LDFLAGS_vmlinux		+= -Bsymbolic -pie -z norelro \
+LDFLAGS_vmlinux		+= -Bsymbolic -z notext \
 			$(call ld-option, --no-apply-dynamic-relocs)
 
 # Pass -pie for lld to minimize image size
-#ifeq ($(CONFIG_LD_IS_LLD), y)
-#LDFLAGS_vmlinux		+= -pie -z norelro
-#else
-#LDFLAGS_vmlinux		+= -shared
-#endif
+ifeq ($(CONFIG_LD_IS_LLD), y)
+LDFLAGS_vmlinux		+= -pie -z norelro
+else
+LDFLAGS_vmlinux		+= -shared
+endif
 endif
 
 ifeq ($(CONFIG_ARM64_ERRATUM_843419),y)
   ifeq ($(call ld-option, --fix-cortex-a53-843419),)
-#$(warning ld does not support --fix-cortex-a53-843419; kernel may be susceptible to erratum)
+$(warning ld does not support --fix-cortex-a53-843419; kernel may be susceptible to erratum)
   else
 LDFLAGS_vmlinux	+= --fix-cortex-a53-843419
   endif
@@ -105,7 +105,7 @@ TEXT_OFFSET := $(shell awk "BEGIN {srand(); printf \"0x%06x\n\", \
 		 int(2 * 1024 * 1024 / (2 ^ $(CONFIG_ARM64_PAGE_SHIFT)) * \
 		 rand()) * (2 ^ $(CONFIG_ARM64_PAGE_SHIFT))}")
 else
-TEXT_OFFSET := 0x0
+TEXT_OFFSET := 0x00080000
 endif
 
 ifeq ($(CONFIG_KASAN_SW_TAGS), y)
