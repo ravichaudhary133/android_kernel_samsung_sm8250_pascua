@@ -83,5 +83,5 @@ jobs:
       - name: Upload kernel to artifact
         uses: actions/upload-artifact@v4
         with:
-          name: output_kernel
+          name: pascua_kernel
           path: AnyKernel3/*
