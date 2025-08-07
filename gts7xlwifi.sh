@@ -3,7 +3,7 @@
 KERNEL_DIR="$(pwd)"
 GCC_PATH="/usr/bin/"
 LLD_PATH="/usr/bin/"
-KERNEL_NAME="not_kernel-"
+KERNEL_NAME="pascua_kernel-"
 MAKE="./makeparallel" 
 KERNEL_MAKE_ENV="DTC_EXT=$(pwd)/tools/dtc CONFIG_BUILD_ARM64_DT_OVERLAY=y"
 
@@ -44,5 +44,5 @@ cp $IMAGE AnyKernel3/Image
 
 cd AnyKernel3
 rm *.zip
-zip -r9 ${KERNEL_NAME}$(date +"%Y%m%d")+gts7xlwifi.zip .
+#zip -r9 ${KERNEL_NAME}$(date +"%Y%m%d")+gts7xlwifi.zip .
 echo "The bomb has been planted."
