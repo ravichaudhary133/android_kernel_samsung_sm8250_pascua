@@ -15,7 +15,7 @@ on:
         - dtbo.img
   push:
     tags:
-      - 'v*'  # Trigger on version tags (e.g., v1.0.0)
+      - 'v*'
 
 env:
   ARTIFACT_DIR: kernel_artifacts_${{ github.run_number }}
@@ -23,13 +23,13 @@ env:
 jobs:
   buildkernel:
     runs-on: ubuntu-latest
-    
+
     steps:
       # Checkout repository
       - uses: actions/checkout@v4
         with:
           submodules: recursive
-        
+
       # Setup environment
       - name: Setup environment
         run: |
@@ -46,14 +46,13 @@ jobs:
 
       # Create artifact directory
       - name: Create artifact directory
-        run: |
-          mkdir -p "${{ env.ARTIFACT_DIR }}"
-          ls -la
+        run: mkdir -p "${{ env.ARTIFACT_DIR }}"
 
-      # Build kernel
+      # Set permissions for build script
       - name: Set permissions
         run: chmod +x gts7xlwifi.sh
 
+      # Build kernel
       - name: Build kernel
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
@@ -74,7 +73,7 @@ jobs:
           elif [[ -f out/arch/arm64/boot/Image ]]; then
             cp out/arch/arm64/boot/Image AnyKernel3/Image
           fi
-          
+
           # Copy dtbo if exists
           if [[ -f out/arch/arm64/boot/dtbo.img ]]; then
             cp out/arch/arm64/boot/dtbo.img AnyKernel3/dtbo.img
@@ -83,36 +82,46 @@ jobs:
           # Create AnyKernel zip
           cd AnyKernel3
           zip -r9 kernel.zip *
-          mv kernel.zip ../${{ env.ARTIFACT_DIR }}/kernel-${{ github.ref_name || 'dev' }}.zip
+          mv kernel.zip ../${{ env.ARTIFACT_DIR }}/kernel.zip
           cd ..
 
-      # Upload artifact for both trigger types
+      # Upload build artifact
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: kernel-build
           path: ${{ env.ARTIFACT_DIR }}/*
 
-      # Create release only for tags
+      # Set timestamped release tag and name
+      - name: Set release tag and name
+        id: taginfo
+        run: |
+          echo "tag=run-${{ github.run_number }}-$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+          echo "name=Kernel Build #${{ github.run_number }} - $(date +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+
+      # Create GitHub Release for every run
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ github.ref }}
-          name: ${{ github.ref_name }}
-          body: "Kernel build for ${{ github.ref_name }}"
+          tag_name: ${{ steps.taginfo.outputs.tag }}
+          name: ${{ steps.taginfo.outputs.name }}
+          body: |
+            Kernel build run number: ${{ github.run_number }}
+            Triggered by: ${{ github.event_name }}
+            Timestamp: ${{ steps.taginfo.outputs.name }}
           draft: false
-          prerelease: false
+          prerelease: true
 
-      # Upload release asset
+      # Upload release asset (kernel.zip)
       - name: Upload Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ env.ARTIFACT_DIR }}/kernel-${{ github.ref_name }}.zip
-          asset_name: kernel-${{ github.ref_name }}.zip
+          asset_path: ${{ env.ARTIFACT_DIR }}/kernel.zip
+          asset_name: gts7xlwifi-${{ steps.taginfo.outputs.tag }}.zip
           asset_content_type: application/zip
