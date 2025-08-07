@@ -23,7 +23,7 @@ rm -rf /home/skye/bomb/dtbo.img
 rm -rf .version
 rm -rf .local
 #make O=/home/skye/bomb/out clean
-make O=/home/skye/bomb/out ARCH=arm64 LLVM=1 LLVM_IAS=1 "${MAKE_OPT[@]}" vendor/kona-sec-perf_defconfig vendor/samsung/gts7xlwifi.config
+make O=/home/skye/bomb/out ARCH=arm64 LLVM=1 LLVM_IAS=1 "${MAKE_OPT[@]}" vendor/kona-sec-perf_defconfig vendor/samsung/gts7l.config
 
 echo "*****************************************"
 echo "*****************************************"
@@ -44,5 +44,5 @@ cp $IMAGE AnyKernel3/Image
 
 cd AnyKernel3
 rm *.zip
-#zip -r9 ${KERNEL_NAME}$(date +"%Y%m%d")+gts7xlwifi.zip .
+#zip -r9 ${KERNEL_NAME}$(date +"%Y%m%d")+gts7l.zip .
 echo "The bomb has been planted."
