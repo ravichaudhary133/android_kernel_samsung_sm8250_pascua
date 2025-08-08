@@ -96,8 +96,8 @@ jobs:
       - name: Set release tag and name
         id: taginfo
         run: |
-          echo "tag=run-${{ github.run_number }}-$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
-          echo "name=Kernel Build #${{ github.run_number }} - $(date +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+          echo "tag=pascua_stock-${{ github.run_number }}-$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+          echo "name=pascua_stock #${{ github.run_number }} - $(date +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
 
       # Create GitHub Release for every run
       - name: Create Release
@@ -123,5 +123,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: ${{ env.ARTIFACT_DIR }}/kernel.zip
-          asset_name: gts7xlwifi-${{ steps.taginfo.outputs.tag }}.zip
+          asset_name: gts7xlwifi-pstock-${{ steps.taginfo.outputs.tag }}.zip
           asset_content_type: application/zip
