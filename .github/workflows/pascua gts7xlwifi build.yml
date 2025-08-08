@@ -96,8 +96,8 @@ jobs:
       - name: Set release tag and name
         id: taginfo
         run: |
-          echo "tag=run-${{ github.run_number }}-$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
-          echo "name=Kernel Build #${{ github.run_number }} - $(date +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
+          echo "tag=gts7xl-pascua_stock-${{ github.run_number }}-$(date +'%Y%m%d-%H%M%S')" >> "$GITHUB_OUTPUT"
+          echo "name= Pascua Stock Kernel Build #${{ github.run_number }} - $(date +'%Y-%m-%d %H:%M:%S')" >> "$GITHUB_OUTPUT"
 
       # Create GitHub Release for every run
       - name: Create Release
