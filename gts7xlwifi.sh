@@ -32,9 +32,9 @@ echo "*****************************************"
 #DTB_OUT="/home/skye/bomb/out/arch/arm64/boot/dts/vendor/qcom"
 #cat $DTB_OUT/*.dtb > AnyKernel3/dtb
 
-make -j12 O=/home/skye/bomb/out ARCH=arm64 LLVM=1 LLVM_IAS=1 "${MAKE_OPT[@]}" dtbo.img
-DTBO_OUT="/home/skye/bomb/out/arch/arm64/boot"
-cp $DTBO_OUT/dtbo.img AnyKernel3/dtbo.img
+#make -j12 O=/home/skye/bomb/out ARCH=arm64 LLVM=1 LLVM_IAS=1 "${MAKE_OPT[@]}" dtbo.img
+#DTBO_OUT="/home/skye/bomb/out/arch/arm64/boot"
+#cp $DTBO_OUT/dtbo.img AnyKernel3/dtbo.img
 make -j12 O=/home/skye/bomb/out ARCH=arm64 LLVM=1 LLVM_IAS=1 "${MAKE_OPT[@]}" Image
 IMAGE="/home/skye/bomb/out/arch/arm64/boot/Image"
 echo "**Build outputs**"
